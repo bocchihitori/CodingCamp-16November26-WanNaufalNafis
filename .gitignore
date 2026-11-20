@@ -1,0 +1,40 @@
+# ── OS files ──────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ── Editor & IDE ──────────────────────────────────────────
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ── Logs & temp files ─────────────────────────────────────
+*.log
+*.tmp
+*.temp
+npm-debug.log*
+
+# ── Node (not used, but guard against accidental init) ────
+node_modules/
+package-lock.json
+yarn.lock
+
+# ── Build output (not used, guard only) ───────────────────
+dist/
+build/
+
+# ── Environment / secrets (never commit these) ────────────
+.env
+.env.local
+.env.*.local
+
+# ── NOTE: .kiro/ is intentionally NOT ignored ─────────────
+# It contains project specs and steering files required
+# for the RevoU submission and Kiro IDE configuration.

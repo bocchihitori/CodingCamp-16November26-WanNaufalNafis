@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do Life Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+      <div class="header__inner">
+
+        <!-- Greeting (Challenge: Custom Name) -->
+        <div class="greeting">
+          <h1 class="greeting__text">
+            <span id="greeting-time-of-day">Hello</span>, <span id="greeting-name">Friend</span>! 👋
+          </h1>
+          <div class="greeting__edit">
+            <input
+              type="text"
+              id="name-input"
+              class="greeting__input"
+              maxlength="30"
+              placeholder="Enter your name…"
+              aria-label="Your name"
+            />
+            <button id="name-save-btn" class="btn btn--small" aria-label="Save name">
+              Save
+            </button>
+          </div>
+          <div class="greeting__clock">
+            <span id="clock-time" class="clock__time" aria-live="polite" aria-atomic="true"></span>
+            <span id="clock-date" class="clock__date"></span>
+          </div>
+        </div>
+
+        <!-- Dark Mode Toggle (Challenge: Light / Dark Mode) -->
+        <button
+          id="theme-toggle"
+          class="btn btn--icon"
+          aria-label="Toggle dark mode"
+          title="Toggle light / dark mode"
+        >
+          <span id="theme-icon">🌙</span>
+        </button>
+
+      </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+
+      <!-- ── ADD TASK ── -->
+      <section class="card" aria-label="Add a new task">
+        <h2 class="card__title">Add Task</h2>
+
+        <div class="add-task">
+          <input
+            type="text"
+            id="task-input"
+            class="add-task__input"
+            maxlength="120"
+            placeholder="What do you need to do?"
+            aria-label="New task"
+          />
+          <button id="add-task-btn" class="btn btn--primary" aria-label="Add task">
+            + Add
+          </button>
+        </div>
+
+        <!-- Duplicate error (Challenge: Prevent Duplicate Tasks) -->
+        <p id="duplicate-error" class="error-msg" role="alert" aria-live="polite"></p>
+      </section>
+
+      <!-- ── TASK LIST ── -->
+      <section class="card" aria-label="Task list">
+        <div class="task-list-header">
+          <h2 class="card__title">My Tasks</h2>
+          <span id="task-count" class="task-count"></span>
+        </div>
+
+        <div class="filters" role="group" aria-label="Filter tasks">
+          <button class="btn btn--filter active" data-filter="all">All</button>
+          <button class="btn btn--filter" data-filter="active">Active</button>
+          <button class="btn btn--filter" data-filter="completed">Completed</button>
+        </div>
+
+        <ul id="task-list" class="task-list" aria-label="Tasks" aria-live="polite">
+          <!-- Rendered by JavaScript -->
+        </ul>
+
+        <p id="empty-state" class="empty-state" aria-live="polite">
+          No tasks yet. Add one above! ✅
+        </p>
+      </section>
+
+      <!-- ── QUICK LINKS ── -->
+      <section class="card" aria-label="Quick links">
+        <h2 class="card__title">Quick Links</h2>
+
+        <div class="add-link">
+          <input
+            type="text"
+            id="link-name-input"
+            class="add-link__input"
+            maxlength="40"
+            placeholder="Link name (e.g. Gmail)"
+            aria-label="Link name"
+          />
+          <input
+            type="url"
+            id="link-url-input"
+            class="add-link__input"
+            maxlength="300"
+            placeholder="URL (e.g. https://gmail.com)"
+            aria-label="Link URL"
+          />
+          <button id="add-link-btn" class="btn btn--primary" aria-label="Add link">
+            + Add
+          </button>
+        </div>
+
+        <p id="link-error" class="error-msg" role="alert" aria-live="polite"></p>
+
+        <ul id="link-list" class="link-list" aria-label="Quick links" aria-live="polite">
+          <!-- Rendered by JavaScript -->
+        </ul>
+
+        <p id="link-empty-state" class="empty-state" aria-live="polite">
+          No links yet. Add one above! 🔗
+        </p>
+      </section>
+
+      <!-- ── FOCUS TIMER ── -->
+      <section class="card timer-card" aria-label="Focus timer">
+        <h2 class="card__title">Focus Timer</h2>
+
+        <div class="timer">
+          <div
+            id="timer-display"
+            class="timer__display"
+            aria-live="polite"
+            aria-atomic="true"
+          >25:00</div>
+
+          <div class="timer__controls">
+            <button id="timer-start" class="btn btn--primary" aria-label="Start timer">
+              ▶ Start
+            </button>
+            <button id="timer-stop" class="btn btn--small" aria-label="Pause timer" disabled>
+              ⏸ Pause
+            </button>
+            <button id="timer-reset" class="btn btn--small" aria-label="Reset timer">
+              ↺ Reset
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <p>To-Do Life Dashboard &mdash; Built with ❤️ for RevoU</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>

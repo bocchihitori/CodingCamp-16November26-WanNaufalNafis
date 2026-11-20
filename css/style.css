@@ -1,0 +1,723 @@
+/* =============================================================
+   To-Do Life Dashboard — style.css
+   Single CSS file (RevoU requirement)
+   Sections:
+     1. CSS Custom Properties (light + dark themes)
+     2. Reset & Base
+     3. Layout
+     4. Header & Greeting
+     5. Theme Toggle Button
+     6. Cards
+     7. Add-Task Form
+     8. Error Message
+     9. Filters
+    10. Task List & Task Items
+    11. Empty State
+    12. Footer
+    13. Responsive (≤ 600 px)
+============================================================= */
+
+/* ── 1. CSS CUSTOM PROPERTIES ─────────────────────────────── */
+
+:root,
+[data-theme="light"] {
+  --color-bg:          #f4f6fb;
+  --color-surface:     #ffffff;
+  --color-surface-alt: #eef1f8;
+  --color-border:      #d1d9e6;
+  --color-primary:     #4f6ef7;
+  --color-primary-hover: #3a56d4;
+  --color-danger:      #e74c3c;
+  --color-danger-hover:#c0392b;
+  --color-success:     #27ae60;
+  --color-text:        #1a1d2e;
+  --color-text-muted:  #6b7280;
+  --color-error-bg:    #fdecea;
+  --color-error-text:  #c0392b;
+  --color-completed:   #9ca3af;
+  --shadow-card:       0 2px 12px rgba(0, 0, 0, 0.08);
+  --radius:            10px;
+  --transition:        0.25s ease;
+}
+
+[data-theme="dark"] {
+  --color-bg:          #12141f;
+  --color-surface:     #1e2130;
+  --color-surface-alt: #262a3d;
+  --color-border:      #353a52;
+  --color-primary:     #6b87ff;
+  --color-primary-hover: #849bff;
+  --color-danger:      #ff6b6b;
+  --color-danger-hover:#ff8e8e;
+  --color-success:     #4ade80;
+  --color-text:        #e8eaf6;
+  --color-text-muted:  #9499b8;
+  --color-error-bg:    #3b1f1f;
+  --color-error-text:  #ff8e8e;
+  --color-completed:   #5a607a;
+  --shadow-card:       0 2px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* ── 2. RESET & BASE ──────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               Helvetica, Arial, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: var(--radius);
+  transition: background-color var(--transition), color var(--transition),
+              transform 0.1s ease;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+input[type="text"] {
+  font-family: inherit;
+  font-size: 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  padding: 0.55rem 0.85rem;
+  outline: none;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+input[type="text"]:focus {
+  border-color: var(--color-primary);
+}
+
+input[type="text"]::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ── 3. LAYOUT ────────────────────────────────────────────── */
+
+.main {
+  flex: 1;
+  width: 100%;
+  max-width: 680px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── 4. HEADER & GREETING ─────────────────────────────────── */
+
+.header {
+  background-color: var(--color-surface);
+  border-bottom: 1.5px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  transition: background-color var(--transition), border-color var(--transition);
+}
+
+.header__inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.greeting {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.greeting__text {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.greeting__text span {
+  color: var(--color-primary);
+}
+
+.greeting__edit {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.greeting__input {
+  width: 180px;
+  font-size: 0.875rem;
+  padding: 0.4rem 0.7rem;
+}
+
+/* ── 5. BUTTONS ───────────────────────────────────────────── */
+
+/* Generic shared base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+}
+
+/* Primary action button */
+.btn--primary {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.btn--primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* Small secondary button (Save name) */
+.btn--small {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  border: 1.5px solid var(--color-border);
+}
+
+.btn--small:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+}
+
+/* Icon-only button (theme toggle) */
+.btn--icon {
+  background-color: var(--color-surface-alt);
+  border: 1.5px solid var(--color-border);
+  padding: 0.5rem 0.75rem;
+  font-size: 1.2rem;
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+
+.btn--icon:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Filter buttons */
+.btn--filter {
+  background-color: var(--color-surface-alt);
+  color: var(--color-text-muted);
+  border: 1.5px solid var(--color-border);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.btn--filter:hover,
+.btn--filter.active {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+}
+
+/* Danger button (delete task) */
+.btn--danger {
+  background-color: transparent;
+  color: var(--color-danger);
+  border: 1.5px solid transparent;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.btn--danger:hover {
+  background-color: var(--color-danger);
+  color: #ffffff;
+  border-color: var(--color-danger);
+}
+
+/* ── 6. CARDS ─────────────────────────────────────────────── */
+
+.card {
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-card);
+  transition: background-color var(--transition), border-color var(--transition);
+}
+
+.card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+}
+
+/* ── 7. ADD-TASK FORM ─────────────────────────────────────── */
+
+.add-task {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.add-task__input {
+  flex: 1;
+}
+
+/* ── 8. ERROR MESSAGE ─────────────────────────────────────── */
+
+.error-msg {
+  margin-top: 0.6rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-error-text);
+  background-color: var(--color-error-bg);
+  border-radius: calc(var(--radius) / 2);
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.error-msg.visible {
+  padding: 0.5rem 0.75rem;
+  max-height: 60px;
+}
+
+/* ── 9. FILTERS ───────────────────────────────────────────── */
+
+.task-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.task-count {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  background-color: var(--color-surface-alt);
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.15rem 0.65rem;
+  font-weight: 600;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ── 10. TASK LIST & TASK ITEMS ───────────────────────────── */
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--color-surface-alt);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.9rem;
+  transition: background-color var(--transition), border-color var(--transition),
+              opacity var(--transition);
+  animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Checkbox */
+.task-item__checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid var(--color-border);
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  background-color: var(--color-surface);
+  transition: background-color var(--transition), border-color var(--transition);
+  position: relative;
+}
+
+.task-item__checkbox:checked {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+}
+
+.task-item__checkbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 5px;
+  height: 9px;
+  border: 2px solid #ffffff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* Task text */
+.task-item__text {
+  flex: 1;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  word-break: break-word;
+  transition: color var(--transition);
+}
+
+/* Completed state */
+.task-item.completed {
+  opacity: 0.65;
+}
+
+.task-item.completed .task-item__text {
+  text-decoration: line-through;
+  color: var(--color-completed);
+}
+
+/* ── 11. EMPTY STATE ──────────────────────────────────────── */
+
+.empty-state {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  padding: 1.5rem 0 0.5rem;
+  display: none;
+}
+
+.empty-state.visible {
+  display: block;
+}
+
+/* ── 12. FOOTER ───────────────────────────────────────────── */
+
+.footer {
+  text-align: center;
+  padding: 1.25rem 1rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  border-top: 1.5px solid var(--color-border);
+  transition: border-color var(--transition);
+}
+
+/* ── 13. RESPONSIVE (≤ 600 px) ───────────────────────────── */
+
+@media (max-width: 600px) {
+  .header__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .greeting__text {
+    font-size: 1.15rem;
+  }
+
+  .greeting__input {
+    width: 140px;
+  }
+
+  .btn--icon {
+    align-self: flex-end;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .header {
+    position: relative;
+  }
+
+  .add-task {
+    flex-direction: column;
+  }
+
+  .add-task__input {
+    width: 100%;
+  }
+
+  .btn--primary {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* =============================================================
+   ADDITIONS — Inline Edit, Quick Links, Focus Timer
+   Appended to style.css (single-file rule preserved)
+============================================================= */
+
+/* ── INLINE EDIT (task edit mode) ────────────────────────── */
+
+.task-item__edit-input {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.3rem 0.6rem;
+  border: 1.5px solid var(--color-primary);
+  border-radius: calc(var(--radius) / 2);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  outline: none;
+}
+
+.btn--edit {
+  background-color: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px solid transparent;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.btn--edit:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+}
+
+.btn--save {
+  background-color: var(--color-success);
+  color: #ffffff;
+  border: 1.5px solid var(--color-success);
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.btn--save:hover {
+  opacity: 0.85;
+}
+
+.btn--cancel {
+  background-color: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px solid var(--color-border);
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+}
+
+.btn--cancel:hover {
+  background-color: var(--color-surface-alt);
+}
+
+/* ── QUICK LINKS ──────────────────────────────────────────── */
+
+.add-link {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.add-link__input {
+  flex: 1;
+  min-width: 120px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.55rem 0.85rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color var(--transition), background-color var(--transition);
+}
+
+.add-link__input:focus {
+  border-color: var(--color-primary);
+}
+
+.add-link__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--color-surface-alt);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.65rem 0.9rem;
+  transition: background-color var(--transition), border-color var(--transition);
+  animation: slideIn 0.2s ease;
+}
+
+.link-item__icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.link-item__anchor {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  word-break: break-all;
+  transition: color var(--transition);
+}
+
+.link-item__anchor:hover {
+  text-decoration: underline;
+}
+
+.link-item__url {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  word-break: break-all;
+  margin-top: 0.1rem;
+}
+
+.link-item__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ── FOCUS TIMER ──────────────────────────────────────────── */
+
+.timer-card {
+  text-align: center;
+}
+
+.timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.timer__display {
+  font-size: 4rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition: color var(--transition);
+}
+
+.timer__display.timer--running {
+  color: var(--color-primary);
+}
+
+.timer__display.timer--finished {
+  color: var(--color-success);
+}
+
+.timer__controls {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.timer__controls .btn--primary {
+  min-width: 100px;
+}
+
+.timer__controls .btn--small {
+  min-width: 90px;
+}
+
+/* ── RESPONSIVE ADDITIONS (≤ 600 px) ─────────────────────── */
+
+@media (max-width: 600px) {
+  .add-link {
+    flex-direction: column;
+  }
+
+  .add-link__input {
+    width: 100%;
+  }
+
+  .timer__display {
+    font-size: 3rem;
+  }
+
+  .timer__controls .btn--primary,
+  .timer__controls .btn--small {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── GREETING CLOCK (date/time display) ──────────────────── */
+
+.greeting__clock {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.1rem;
+}
+
+.clock__time {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.clock__date {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
